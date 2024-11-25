@@ -36,6 +36,7 @@ clock = pygame.time.Clock()
 
 class GameObject:
     """Базовый класс для игровых объектов."""
+
     def __init__(self, x, y, color):
         """Инициализация объекта: позиция (x, y) и цвет."""
         self.position = (x, y)
@@ -50,11 +51,12 @@ class GameObject:
             GRID_SIZE,
         )
         pygame.draw.rect(screen, self.color, rect)
-        pygame.draw.rect(screen, BORDER_COLOR, rect, 1) # Рисуем рамку
+        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)  # Рисуем рамку
 
 
 class Apple(GameObject):
     """Класс для яблока."""
+
     def __init__(self):
         """Инициализация яблока: вызов базового класса и установка случайной позиции."""
         super().__init__(0, 0, APPLE_COLOR)
@@ -70,6 +72,7 @@ class Apple(GameObject):
 
 class Snake(GameObject):
     """Класс для змейки."""
+
     def __init__(self):
         """Инициализация змейки: начальная позиция, длина, направление и т.д."""
         super().__init__(GRID_WIDTH // 2, GRID_HEIGHT // 2, SNAKE_COLOR)
@@ -77,7 +80,7 @@ class Snake(GameObject):
         self.positions = [self.position]
         self.direction = RIGHT
         self.next_direction = None
-        self.last = None # Позиция хвоста для затирания следа
+        self.last = None  # Позиция хвоста для затирания следа
 
     def move(self):
         """Обновление позиции змейки с учетом переноса через границы."""
@@ -100,7 +103,7 @@ class Snake(GameObject):
 
     def draw(self, screen):
         """Отрисовка змейки на экране."""
-        for position in self.positions[:-1]: # Рисуем все сегменты кроме головы
+        for position in self.positions[:-1]:  # Рисуем все сегменты кроме головы
             rect = pygame.Rect(
                 position[0] * GRID_SIZE,
                 position[1] * GRID_SIZE,
@@ -117,7 +120,7 @@ class Snake(GameObject):
         )
         pygame.draw.rect(screen, self.color, head_rect)
         pygame.draw.rect(screen, BORDER_COLOR, head_rect, 1)
-        if self.last: # Затираем след
+        if self.last:  # Затираем след
             last_rect = pygame.Rect(
                 self.last[0] * GRID_SIZE,
                 self.last[1] * GRID_SIZE,
@@ -162,21 +165,21 @@ def main():
 
     running = True
     while running:
-        clock.tick(SPEED) # Ограничение FPS
+        clock.tick(SPEED)  # Ограничение FPS
         handle_keys(snake)
         snake.move()
 
-        if snake.position == apple.position: # Змейка съела яблоко
+        if snake.position == apple.position:  # Змейка съела яблоко
             snake.length += 1
             apple.randomize_position()
 
-        if snake.check_collision(): # Проверка на столкновение
+        if snake.check_collision():  # Проверка на столкновение
             running = False
 
-        screen.fill(BOARD_BACKGROUND_COLOR) # Заливаем экран фоном
+        screen.fill(BOARD_BACKGROUND_COLOR)  # Заливаем экран фоном
         apple.draw(screen)
         snake.draw(screen)
-        pygame.display.update() # Обновляем экран
+        pygame.display.update()  # Обновляем экран
 
     pygame.quit()
 
